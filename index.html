@@ -1,0 +1,67 @@
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+    
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <title>משרות פנויות - מקצוע לחיים</title>
+    <style>
+        table, th, td 
+        {
+            margin:10px 0;
+            border:solid 1px #333;
+            padding:2px 4px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+<select id="list">
+  <option value="electricity">חשמל</option>
+  <option value="machines">מכונות</option>
+  <option value="automobil">רכב</option>
+  <option value="electronics">אלקטרוניקה</option>
+</select>
+<button onclick="choose();">בחר משרה</button>
+
+<div id="table_location">
+   
+	</div>
+</body>
+<script type="text/javascript">
+function choose(){
+ document.getElementById('table_location').innerHTML = "";
+var selected = document.getElementById("list").value;
+window[selected]();
+};
+
+function electricity(){
+	document.getElementById('table_location').innerHTML = ('<table id="displayData"><tr><th>משרה</th><th>פירוט משרה</th></tr></table>');
+    var output = document.getElementById("data");
+    var config = {
+        apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
+			authDomain: "teneapp-fe33d.firebaseapp.com",
+			databaseURL: "https://teneapp-fe33d.firebaseio.com",
+			projectId: "teneapp-fe33d",
+			storageBucket: "teneapp-fe33d.appspot.com",
+			messagingSenderId: "215621007831"
+    };
+    firebase.initializeApp(config);
+var table = document.getElementById('displayData');
+dbRefObject = firebase.database().ref('/Jobs/').child('Electricity/' );
+dbRefObject.on('value', snap => {
+	data = snap.val();
+	for(var r in data) {
+		var row = table.insertRow(-1);
+		for(var c in data[r]) {
+			cell = row.insertCell(0);
+			cell.innerHTML = data[r][c];
+		}
+	}
+});
+};
+
+</script>
+</html>	
