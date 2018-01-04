@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
     
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
-    <title>משרות פנויות - מקצוע לחיים</title>
+    <title>הוספת משרות - מקצוע לחיים</title>
     <style>
         table, th, td 
         {
@@ -25,16 +25,15 @@
   <option value="Electronic">אלקטרוניקה</option>
   <option value="toon">תעשיה וניהול</option>
 </select>
-<button onclick="choose();">בחר משרה</button>
+<br />
+<input type="text" placeholder="הזן שם משרה" id="jobName">
+<br />
+<textarea type="text" placeholder="הזן תיאור משרה" id="jobDesc"></textarea>
+<br />
+<button onclick="addJob();">הוסף משרה</button>
 
-<div id="table_location">
-   
-	</div>
-</body>
-<script type="text/javascript">
-(function() {
-   var output = document.getElementById("data");
-    var config = {
+<script>
+var config = {
         apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
 			authDomain: "teneapp-fe33d.firebaseapp.com",
 			databaseURL: "https://teneapp-fe33d.firebaseio.com",
@@ -43,29 +42,14 @@
 			messagingSenderId: "215621007831"
     };
     firebase.initializeApp(config);
-	
-})();
 
-function choose(){
- document.getElementById('table_location').innerHTML = "";
-var selected = document.getElementById("list").value;
-document.getElementById('table_location').innerHTML = ('<table id="displayData"><tr><th>משרה</th><th>פירוט משרה</th></tr></table>');
-   
-var table = document.getElementById('displayData');
-dbRefObject = firebase.database().ref('/Jobs/').child(selected + '/' );
-dbRefObject.on('value', snap => {
-	data = snap.val();
-	for(var r in data) {
-		var row = table.insertRow(-1);
-		for(var c in data[r]) {
-			cell = row.insertCell(0);
-			cell.innerHTML = data[r][c];
-		}
-	}
-});
-};
-
-
-
+function writeUserData(userId, name, email, imageUrl) {
+  firebase.database().ref('/Jobs/').child('Electricity/' ).set({
+    username: name,
+    email: email,
+    profile_picture : imageUrl
+  });
+}
 </script>
+</body>
 </html>	
