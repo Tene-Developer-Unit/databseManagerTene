@@ -1,0 +1,62 @@
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+    
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <title>הוספת משרות - מקצוע לחיים</title>
+    <style>
+        table, th, td 
+        {
+            margin:10px 0;
+            border:solid 1px #333;
+            padding:2px 4px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+<select id="list">
+  <option value="Electricity">חשמל</option>
+  <option value="Mechanic">מכונות</option>
+  <option value="Cars">רכב</option>
+  <option value="Electronic">אלקטרוניקה</option>
+  <option value="toon">תעשיה וניהול</option>
+</select>
+<br />
+<input type="text" placeholder="הזן שם משרה" id="jobName">
+<br />
+<input type="text" placeholder="הזן מזהה משרה" id="Unique">
+<br />
+<textarea type="text" placeholder="הזן תיאור משרה" id="jobDesc"></textarea>
+<br />
+<button onclick="addJob();">הוסף משרה</button>
+
+<script>
+var config = {
+        apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
+			authDomain: "teneapp-fe33d.firebaseapp.com",
+			databaseURL: "https://teneapp-fe33d.firebaseio.com",
+			projectId: "teneapp-fe33d",
+			storageBucket: "teneapp-fe33d.appspot.com",
+			messagingSenderId: "215621007831"
+    };
+    firebase.initializeApp(config);
+
+	function addJob(){
+	var selected = document.getElementById("list").value;
+	var Desc = document.getElementById("jobDesc").value;
+	var Name = document.getElementById("jobName").value;
+	var UName = document.getElementById("Unique").value;
+  firebase.database().ref('/Jobs/').child(selected + '/' ).child(UName).update({
+    jobDesc: Desc,
+    jobName: Name,
+  });
+}
+  
+  
+</script>
+</body>
+</html>	
