@@ -1,4 +1,4 @@
-(function electric(){
+(function() {
     var output = document.getElementById("data");
     var config = {
         apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
@@ -19,7 +19,7 @@ dbRefObject.on('value', snap => {
 	for(var r in data) {
 		var row = table.insertRow(-1);
 		for(var c in data[r]) {
-			cell = row.insertCell(0);
+			cell = row.insertCell(-1);
 			cell.innerHTML = data[r][c];
 		}
 	}
