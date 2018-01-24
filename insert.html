@@ -43,13 +43,17 @@ var config = {
     };
     firebase.initializeApp(config);
 
-function writeUserData(userId, name, email, imageUrl) {
-  firebase.database().ref('/Jobs/').child('Electricity/' ).set({
-    username: name,
-    email: email,
-    profile_picture : imageUrl
+	function addJob(){
+	var selected = document.getElementById("list").value;
+	var Desc = document.getElementById("jobDesc").value;
+	var Name = document.getElementById("jobName").value;
+  firebase.database().ref('/Jobs/').child(selected + '/' ).push({
+    jobDesc: Desc,
+    jobName: Name,
   });
 }
+  
+  
 </script>
 </body>
 </html>	
