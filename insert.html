@@ -3,6 +3,7 @@
   <meta charset="UTF-8">
     
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+	<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
     <title>הוספת משרות - מקצוע לחיים</title>
     <style>
         table, th, td 
@@ -28,11 +29,14 @@
 <br />
 <input type="text" placeholder="הזן שם משרה" id="jobName">
 <br />
-<textarea type="text" placeholder="הזן תיאור משרה" id="jobDesc"></textarea>
+<input type="text" placeholder="הזן מזהה משרה" id="Unique">
+<br />
+<textarea type="text" placeholder="הזן תיאור משרה" id="jobDesc" name="jobDesc"></textarea>
 <br />
 <button onclick="addJob();">הוסף משרה</button>
 
 <script>
+CKEDITOR.replace( 'jobDesc' );
 var config = {
         apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
 			authDomain: "teneapp-fe33d.firebaseapp.com",
@@ -45,9 +49,10 @@ var config = {
 
 	function addJob(){
 	var selected = document.getElementById("list").value;
-	var Desc = document.getElementById("jobDesc").value;
+	var Desc = CKEDITOR.instances['jobDesc'].getData();
 	var Name = document.getElementById("jobName").value;
-  firebase.database().ref('/Jobs/').child(selected + '/' ).push({
+	var UName = document.getElementById("Unique").value;
+    firebase.database().ref('/Jobs/').child(selected + '/' ).push({
     jobDesc: Desc,
     jobName: Name,
   });
