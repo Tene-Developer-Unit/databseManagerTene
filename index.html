@@ -26,8 +26,9 @@
   <option value="Electronic">אלקטרוניקה</option>
   <option value="toon">תעשיה וניהול</option>
 </select>
-<button onclick="list();">בחר משרה</button>
+<button onclick="list();">הצג משרות קיימות</button>
 <button onclick="remove();">הסר משרה</button>
+<a href="insert.html"><button>הוסף משרה חדשה</button></a>
 
 <div id="table_location">
    
@@ -75,7 +76,14 @@ database.once('value', function(snapshot){
 });
 };
 
-
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
 
 function remove(){
 var selected = document.getElementById("list").value;
@@ -85,8 +93,7 @@ ref.orderByChild('jobName').equalTo(name).on("child_added", function (snapshot) 
   snapshot.ref.remove();
 });
 
-
-
+alert('המשרה הוסרה בהצלחה!');
 };
 
 
