@@ -1,0 +1,88 @@
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+    
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>משרות פנויות - מקצוע לחיים</title>
+    <style>
+        table, th, td 
+        {
+            margin:10px 0;
+            border:solid 1px #333;
+            padding:2px 4px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+<select id="list">
+  <option value="Electricity">חשמל</option>
+  <option value="Mechanic">מכונות</option>
+  <option value="Cars">רכב</option>
+  <option value="Electronic">אלקטרוניקה</option>
+  <option value="toon">תעשיה וניהול</option>
+</select>
+<button onclick="MyController();">הצג משרות קיימות</button>
+<button onclick="remove();">הסר משרה</button>
+<a href="insert.html"><button>הוסף משרה חדשה</button></a>
+
+<div id="table_location">
+   
+	</div>
+</body>
+<script type="text/javascript">
+(function() {
+   var output = document.getElementById("data");
+    var config = {
+        apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
+			authDomain: "teneapp-fe33d.firebaseapp.com",
+			databaseURL: "https://teneapp-fe33d.firebaseio.com",
+			projectId: "teneapp-fe33d",
+			storageBucket: "teneapp-fe33d.appspot.com",
+			messagingSenderId: "215621007831"
+    };
+    firebase.initializeApp(config);
+	
+})();
+
+
+
+function MyController() {
+usersRef = firebase.database().ref('Jobs');
+usersRef.orderByValue().on("value", function(snapshot) {
+    console.log(snapshot.val());
+    snapshot.forEach(function(data) {
+        console.log(data.key);
+    });
+});
+}
+
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+function remove(){
+var selected = document.getElementById("list").value;
+var ref = firebase.database().ref('/Jobs/').child(selected + '/' );
+var name = document.querySelector('input[name="check"]:checked').value;
+ref.orderByChild('jobName').equalTo(name).on("child_added", function (snapshot) {
+  snapshot.ref.remove();
+});
+
+alert('המשרה הוסרה בהצלחה!');
+};
+
+
+
+</script>
+</html>	
