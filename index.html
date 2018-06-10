@@ -19,11 +19,10 @@
 </head>
 <body>
 <select id="list">
-  <option value="Electricity">חשמל</option>
-  <option value="Mechanic">מכונות</option>
-  <option value="Cars">רכב</option>
-  <option value="Electronic">אלקטרוניקה</option>
-  <option value="toon">תעשיה וניהול</option>
+  <option value="electricity">חשמל</option>
+  <option value="machines">מכונות</option>
+  <option value="automobil">רכב</option>
+  <option value="electronics">אלקטרוניקה</option>
 </select>
 <button onclick="choose();">בחר משרה</button>
 
@@ -32,8 +31,15 @@
 	</div>
 </body>
 <script type="text/javascript">
-(function() {
-   var output = document.getElementById("data");
+function choose(){
+ document.getElementById('table_location').innerHTML = "";
+var selected = document.getElementById("list").value;
+window[selected]();
+};
+
+function electricity(){
+	document.getElementById('table_location').innerHTML = ('<table id="displayData"><tr><th>משרה</th><th>פירוט משרה</th></tr></table>');
+    var output = document.getElementById("data");
     var config = {
         apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
 			authDomain: "teneapp-fe33d.firebaseapp.com",
@@ -43,16 +49,8 @@
 			messagingSenderId: "215621007831"
     };
     firebase.initializeApp(config);
-	
-})();
-
-function choose(){
- document.getElementById('table_location').innerHTML = "";
-var selected = document.getElementById("list").value;
-document.getElementById('table_location').innerHTML = ('<table id="displayData"><tr><th>משרה</th><th>פירוט משרה</th></tr></table>');
-   
 var table = document.getElementById('displayData');
-dbRefObject = firebase.database().ref('/Jobs/').child(selected + '/' );
+dbRefObject = firebase.database().ref('/Jobs/').child('Electricity/' );
 dbRefObject.on('value', snap => {
 	data = snap.val();
 	for(var r in data) {
@@ -64,8 +62,6 @@ dbRefObject.on('value', snap => {
 	}
 });
 };
-
-
 
 </script>
 </html>	
