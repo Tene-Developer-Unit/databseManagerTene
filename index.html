@@ -26,7 +26,7 @@
   <option value="Electronic">אלקטרוניקה</option>
   <option value="toon">תעשיה וניהול</option>
 </select>
-<button onclick="list();">בחר משרה</button>
+<button onclick="list();">בחר מקצוע</button>
 <button onclick="remove();">הסר משרה</button>
 
 <div id="table_location">
@@ -44,6 +44,7 @@
 			storageBucket: "teneapp-fe33d.appspot.com",
 			messagingSenderId: "215621007831"
     };
+	
     firebase.initializeApp(config);
 	
 })();
@@ -83,6 +84,8 @@ var ref = firebase.database().ref('/Jobs/').child(selected + '/' );
 var name = document.querySelector('input[name="check"]:checked').value;
 ref.orderByChild('jobName').equalTo(name).on("child_added", function (snapshot) {
   snapshot.ref.remove();
+header("Refresh:1; url=index.html");
+  alert('המשרה הוסרה');
 });
 
 
