@@ -1,0 +1,103 @@
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+    
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <title>הוספת חברות - מקצוע לחיים</title>
+    <style>
+        table, th, td 
+        {
+            margin:10px 0;
+            border:solid 1px #333;
+            padding:2px 4px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+רשימת חברות קיימות:
+<select id="list">
+
+</select>
+<br /><br />
+<input type="text" placeholder="הזן שם חברה באנגלית(בקיצור)" id="name0">
+<input type="text" placeholder="הזן שם חברה" id="name">
+<input type="text" placeholder="הזן לינק לוגו חברה" id="logo">
+<br /><br />
+<button onclick="add();">הוסף חברה</button>
+<a href="index.html"><button>חזור</button></a>
+
+
+
+
+<script type="text/javascript">
+(function() {
+   var output = document.getElementById("data");
+    var config = {
+        apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
+			authDomain: "teneapp-fe33d.firebaseapp.com",
+			databaseURL: "https://teneapp-fe33d.firebaseio.com",
+			projectId: "teneapp-fe33d",
+			storageBucket: "teneapp-fe33d.appspot.com",
+			messagingSenderId: "215621007831"
+    };
+    firebase.initializeApp(config);
+	
+})();
+
+
+var companies0 = new Array();
+
+function arrayContains(needle, arrhaystack)
+{
+    return (arrhaystack.indexOf(needle) > -1);
+}
+
+function load(){
+usersRef = firebase.database().ref('CompaniesList');
+usersRef.orderByValue().on("value", function(snapshot) {
+    snapshot.forEach(function(data) {
+		var select = document.getElementById("list");
+		select.options[select.options.length] = new Option(data.key);
+		companies0.push(data.key);
+    });
+});
+}
+load();
+  function add(){
+		var logo = document.getElementById("logo").value;
+        var name = document.getElementById("name").value;
+        var name0 = document.getElementById("name0").value;
+		if (arrayContains(name0, companies0) == true)
+		{
+		alert("אנא שים לב שהחברה אינה קיימת!");
+		} else {
+        if (logo==null || logo=="" || name==null || name=="" || name0==null || name0=="")
+        {
+            alert("אנא מלא את כל השדות הדרושים!");
+            return false;
+        } else {
+  
+  
+  
+	firebase.database().ref('/CompaniesList/' + name0).set({name:name, logo:logo});
+	
+	document.getElementById("list").innerHTML = "";
+	
+	
+	load();
+
+	alert('החברה נוספה בהצלחה!');
+  }
+  }
+  }
+
+
+
+</script>
+
+</body>
+</html>	

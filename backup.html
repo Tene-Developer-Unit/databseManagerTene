@@ -1,0 +1,143 @@
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+    
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>משרות פנויות - מקצוע לחיים</title>
+    <style>
+        table, th, td 
+        {
+            margin:10px 0;
+            border:solid 1px #333;
+            padding:2px 4px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+<select id="list">
+
+</select>
+<button onclick="list();">הצג משרות קיימות</button>
+<button onclick="list2();">הצג חברות קיימות</button>
+<button onclick="remove();">הסר משרה</button>
+<button onclick="remove2();">הסר חברה</button>
+<a href="insert.html"><button>הוסף משרה חדשה</button></a>
+<a href="insert2.html"><button>הוסף חברה חדשה</button></a>
+
+<div id="table_location">
+   
+	</div>
+</body>
+<script type="text/javascript">
+(function() {
+   var output = document.getElementById("data");
+    var config = {
+        apiKey: "AIzaSyCPxWcejZl7Uuho23J5aj3RkuOnAYY8adI",
+			authDomain: "teneapp-fe33d.firebaseapp.com",
+			databaseURL: "https://teneapp-fe33d.firebaseio.com",
+			projectId: "teneapp-fe33d",
+			storageBucket: "teneapp-fe33d.appspot.com",
+			messagingSenderId: "215621007831"
+    };
+    firebase.initializeApp(config);
+	
+})();
+
+
+
+
+usersRef = firebase.database().ref('Jobs');
+usersRef.orderByValue().on("value", function(snapshot) {
+    console.log(snapshot.val());
+    snapshot.forEach(function(data) {
+		var select = document.getElementById("list");
+		select.options[select.options.length] = new Option(data.key);
+    });
+});
+
+
+
+
+function list(){
+ document.getElementById('table_location').innerHTML = "";
+var selected = document.getElementById("list").value;
+document.getElementById('table_location').innerHTML = ('<table id="displayData" name="displayData"><tr><th></th><th>משרה</th><th>פירוט משרה</th></tr></table>');
+   
+var database = firebase.database().ref('/Jobs/').child(selected + '/' );
+database.once('value', function(snapshot){
+    if(snapshot.exists()){
+        var content = '';
+			snapshot.forEach(function(data){
+            var jobDesc = data.val().jobDesc;
+            var jobName= data.val().jobName;
+            content += '<tr>';
+            content += '<td><input type="radio" name="check" value="' + jobName + '" /></td>'; //column1
+            content += '<td>' + jobName + '</td>'; //column1
+            content += '<td>' + jobDesc + '</td>';//column2
+            content += '</tr>';
+        });
+        $('#displayData').append(content);
+    }
+});
+};
+
+
+function remove(){
+var selected = document.getElementById("list").value;
+var ref = firebase.database().ref('/Jobs/').child(selected + '/' );
+var name = document.querySelector('input[name="check"]:checked').value;
+ref.orderByChild('jobName').equalTo(name).on("child_added", function (snapshot) {
+  snapshot.ref.remove();
+});
+alert('המשרה הוסרה בהצלחה!');
+}
+
+function list2(){
+ document.getElementById('table_location').innerHTML = "";
+var selected = document.getElementById("list").value;
+document.getElementById('table_location').innerHTML = ('<table id="displayData" name="displayData"><tr><th></th><th>משרה</th><th>פירוט משרה</th></tr></table>');
+   
+var database = firebase.database().ref('/CompaniesList/');
+database.once('value', function(snapshot){
+    if(snapshot.exists()){
+        var content = '';
+			snapshot.forEach(function(data){
+			var name1 = data.key;
+            var name = data.val().name;
+            var logo= data.val().logo;
+            content += '<tr>';
+            content += '<td><input type="radio" name="check" value="' + name1 + '" /></td>'; //column1
+            content += '<td>' + name + '</td>'; //column1
+            content += '<td><img src="' + logo + '" width="200" height="40"></td>';//column2
+            content += '</tr>';
+        });
+        $('#displayData').append(content);
+    }
+});
+};
+
+
+
+
+function remove2(){
+var name = document.querySelector('input[name="check"]:checked').value;
+
+var ref = firebase.database().ref('/Jobs/');
+ref.child(name).remove();
+
+
+//////// delete Jobs by Company
+var ref = firebase.database().ref('/CompaniesList/');
+ref.child(name).remove();
+
+};
+
+
+
+</script>
+</html>	
